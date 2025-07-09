@@ -247,6 +247,16 @@
                 <span>arXiv</span>
               </a>
             </span>
+            <!-- Code Link. -->
+            <span class="link-block">
+              <!-- TODO: change the arXiv link  -->
+              <a href="" class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                  <i class="fab fa-github"></i>
+                </span>
+                <span>GitHub (coming soon)</span>
+              </a>
+            </span>
             <!-- Video Link. -->
             <!-- <span class="link-block">
                 <a href="#in-the-wild"
@@ -305,9 +315,6 @@
 
   <section class="section">
     <div class="container  is-max-desktop has-text-centered">
-      <!-- <h2 class="subtitle has-text-centered"> -->
-        <!-- <span class="dnerf">We present <b>mustafar</b>, a multimodal understanding framework that leverages Stable Diffusion as a task-aware feature extractor. </span> -->
-      <!-- </h2> -->
 
       <!-- Abstract. -->
       <div class="columns is-centered has-text-centered">
@@ -346,6 +353,12 @@
         <div class="column">
           <h2 class="title is-3 has-text-centered">Overview</h2>
 
+          <br>
+
+          <h2 class="subtitle has-text-centered">
+            We present <span class="dnerf"><b>Mustafar</b></span>, a multimodal understanding framework that leverages Stable Diffusion as a task-aware feature extractor.
+          </h2>
+
           <!-- Teaser -->
           <div class="container  is-max-desktop has-text-centered">
             <img id="teaser" src="./static/images/Teaser.png" alt="Teaser" />
@@ -355,7 +368,8 @@
           <br>
 
           <p class="content has-text-justified">
-            We present <b>Mustafar</b>, a multimodal understanding framework that leverages Stable Diffusion as a task-aware feature extractor. Motivated by the weaknesses of CLIP in capturing fine-grained and compositional visual information, we explore whether the internal representations of text-to-image diffusion models can be harnessed for visual question answering (VQA). We begin by analyzing diffusion features across a range of multimodal tasks and find that they offer both rich semantics and strong image-text alignment. Our investigations into text conditioning reveal that increasing the strength of text guidance leads to sharper focus on relevant image regions. However, we also discover that this alignment can result in caption leakage, where downstream language models are able to recover the  captions from the diffusion features. We provide a detailed analysis of this phenomenon and propose a mitigation strategy to reduce leakage. We further examine using questions directly as prompts and show, through both qualitative and quantitative analysis, that question conditioning helps highlight task-relevant image regions. Finally, we demonstrate that simple fusion strategies combining CLIP features with question-conditioned diffusion features can achieve strong performance across general-purpose and vision-centric benchmarks. Our results suggest that diffusion models are a promising direction for advancing visual understanding, particularly in tasks that demand fine-grained spatial reasoning and compositionality.
+
+            <!-- We present <b>Mustafar</b>, a multimodal understanding framework that leverages Stable Diffusion as a task-aware feature extractor. Motivated by the weaknesses of CLIP in capturing fine-grained and compositional visual information, we explore whether the internal representations of text-to-image diffusion models can be harnessed for visual question answering (VQA). We begin by analyzing diffusion features across a range of multimodal tasks and find that they offer both rich semantics and strong image-text alignment. Our investigations into text conditioning reveal that increasing the strength of text guidance leads to sharper focus on relevant image regions. However, we also discover that this alignment can result in caption leakage, where downstream language models are able to recover the  captions from the diffusion features. We provide a detailed analysis of this phenomenon and propose a mitigation strategy to reduce leakage. We further examine using questions directly as prompts and show, through both qualitative and quantitative analysis, that question conditioning helps highlight task-relevant image regions. Finally, we demonstrate that simple fusion strategies combining CLIP features with question-conditioned diffusion features can achieve strong performance across general-purpose and vision-centric benchmarks. Our results suggest that diffusion models are a promising direction for advancing visual understanding, particularly in tasks that demand fine-grained spatial reasoning and compositionality. -->
           </p>
         </div>
       </div>
@@ -416,7 +430,7 @@
     <br>
     <br>
 
-
+<!-- 
     <h3 class="title is-4 has-text"> Text Conditioning Modulates Spatial Feature Representations</h3>
 
     <img src="./static/images/Figure5.png" class="interpolation-image" alt="unconditional features." />
@@ -448,7 +462,7 @@
     </p>
 </section>
 
-<br>
+<br> -->
 
 <section class="section">
   <div class="container is-max-desktop">
