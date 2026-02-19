@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+    content="Going Down Memory Lane: Scaling Tokens for Video Stream Understanding with Dynamic KV-Cache Memory">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Going Down Memory Lane</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
+
+  <!-- Bulma -->
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <style>
+
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .publication-title {
+      font-family: 'Source Serif 4', serif;
+      font-weight: 600;
+      line-height: 1.15;
+      letter-spacing: -0.005em;
+    }
+
+    .publication-authors {
+      margin-top: 0.5em;
+    }
+
+    .hero {
+      padding-top: 3rem;
+      padding-bottom: 2rem;
+    }
+
+    .publication-links {
+      margin-top: 1.5rem;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <section class="hero">
+    <div class="container is-max-desktop">
+      <div class="column has-text-centered">
+
+        <h1 class="title is-2 publication-title">
+          Going Down Memory Lane:<br>
+          Scaling Tokens for Video Stream Understanding<br>
+          with Dynamic KV-Cache Memory
+        </h1>
+
+        <div class="is-size-5 publication-authors">
+          <span class="author-block">
+            <a href="https://vatsalag99.github.io/">Vatsal Agarwal</a><sup>*1</sup>,
+          </span>
+          <span class="author-block">
+            <a href="https://www.cs.umd.edu/~sakshams/">Saksham Suri</a><sup>1</sup>,
+          </span>
+          <span class="author-block">
+            <a href="https://mgwillia.github.io/">Matthew Gwilliam</a><sup>2</sup>,
+          </span>
+          <span class="author-block">
+            <a href="https://www.cs.umd.edu/~pulkit/">Pulkit Kumar</a><sup>1</sup>,
+          </span>
+          <span class="author-block">
+            <a href="https://www.cs.umd.edu/~abhinav/">Abhinav Shrivastava</a><sup>1</sup>
+          </span>
+        </div>
+
+        <div class="is-size-6 publication-authors">
+          <span class="author-block"><sup>1</sup>University of Maryland</span>
+          <span class="author-block"><sup>2</sup>TikTok</span>
+          <span class="author-block"><sup>*</sup>Internship at TikTok</span>
+        </div>
+
+        <div class="column has-text-centered">
+          <div class="publication-links">
+
+            <span class="link-block">
+              <a href="#" class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                  <i class="fas fa-file-pdf"></i>
+                </span>
+                <span>Paper</span>
+              </a>
+            </span>
+
+            <span class="link-block">
+              <a href="#" class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                  <i class="ai ai-arxiv"></i>
+                </span>
+                <span>arXiv</span>
+              </a>
+            </span>
+
+          </div>
+        </div>
+
+        <br>
+
+        <h2 class="subtitle has-text-centered">
+          <b>TL;DR:</b> <i>Training-free sparse sliding-window attention + retrieval mixture-of-experts for streaming video understanding at high token budgets.</i>
+        </h2>
+
+        <br>
+
+        <div class="has-text-centered">
+          <img src="./static/images/teaser.png" alt="Teaser" style="width: 100%;" />
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <br>
+
+  <section class="section">
+    <div class="container  is-max-desktop has-text-centered">
+
+      <!-- Abstract. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              Online video understanding requires models to robustly encode, store, and retrieve information from a continuous video stream to support accurate video question answering (VQA). 
+              Existing state-of-the-art approaches rely on key-value caching to accumulate frame-level information over time, but use a limited number of tokens per frame, 
+              leading to the loss of fine-grained visual details. In this work, we propose scaling the token budget to enable more granular spatial and temporal understanding and reasoning. 
+              First, we find that current methods are ill-equipped to handle dense streams: their feature encoding causes query-frame similarity scores to increase over time, 
+              biasing retrieval toward later frames. To address this, we introduce an <strong>adaptive selection strategy</strong> that reduces token redundancy while preserving local spatiotemporal information. 
+              We further propose a <strong>training-free retrieval mixture-of-experts</strong> that leverages external models to better identify relevant frames. Our method, MemStream, 
+              achieves +8.0% on CG-Bench, +8.5% on LVBench, and +2.4% on VideoMME (Long) over ReKV with Qwen2.5-VL-7B.
+            </p>
+          </div>
+        </div>
+      </div>
+  </section>
+
+  <br>
+
+  <!-- Motivation Figures -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Scaling Tokens Hurts Retrieval!</h2>
+      <div class="has-text-centered">
+        <img src="./static/images/retrieval_analysis.png" alt="Retrieval Analysis" style="width: 100%;" />
+      </div>
+      <br>
+      <p class="content has-text-justified">
+        We take a state-of-the-art streaming video understanding approach, ReKV <a href="https://arxiv.org/abs/2503.00540">[1]</a>, and adapt it for Qwen2.5-VL. 
+        We observe that increasing per-frame token budget leads to <strong>substantial declines in average layer-wise recall</strong> 
+        across a variety of different questions on CGBench <a href="https://arxiv.org/abs/2412.12075">[2]</a>. Inspecting further, we find that this is due to progressively <strong> increasing query-frame 
+        similarity scores</strong> across the video.
+      </p>
+    </div>
+  </section>
+
+  <!-- Sliding Window Attention -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">How does scaling tokens affect encoding representations?</h2>
+      <div class="has-text-centered">
+        <img src="./static/images/entropy_sims_reversed.pdf" alt="Distribution of Attention Entropy at Varying Token Budgets" style="width: 100%;" />
+      </div>
+      <br>
+      <p class="content has-text-justified">
+
+        Since query-frame similarity depends on the quality of the key representations in the KV-cache, we analyze the self-similarity of 
+        representative frame vectors in the KV-cache across token budgets. We find that at higher token budgets, frame vectors become more similar, 
+        indicating <strong>increased redundancy and reduced discriminability</strong>. 
+
+        We hypothesize that this is due to the attention mechanism becoming less selective at higher token budgets. We validate this theory by measuring the normalized
+        entropy of the attention scores in the sliding window at varying token budgets. We find that at higher token budgets, the <strong>attention entropy increases</strong>, 
+        indicating <strong>less selective behavior</strong> across the sliding window.
+
+      </p>
+    </div>
+  </section>
+  
+  <br>
+
+  <!-- Method -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Method</h2>
+      <div class="has-text-centered">
+        <img src="./static/images/method.pdf" alt="Method" style="width: 100%;" />
+      </div>
+      <br>
+      <p class="content has-text-justified">
+        We introduce MemStream, a training-free unified framework for effective encoding and retrieval of dense video streams. 
+        During encoding, we apply an <strong>adaptive selection strategy</strong> to identify and preserve critical video information in the sliding window. 
+        When retrieving from the KV-cache, we propose a <strong>retrieval mixture-of-experts</strong> that leverages external models to boost retrieval quality.
+      </p>
+    </div>
+  </section>
+
+  <br>
+
+  <!-- Quantitative Results -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Quantitative Results</h2>
+      <div class="has-text-centered">
+        <!-- Add quantitative results image/table here -->
+      </div>
+      <br>
+      <p class="content has-text-justified">
+        <!-- Add quantitative results description here -->
+      </p>
+    </div>
+  </section>
+
+  <br>
+
+  <!-- Qualitative Results -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Qualitative Results</h2>
+      <div class="has-text-centered">
+        <img src="./static/images/qualit_fig.png" alt="Qualitative Results" style="width: 100%;" />
+      </div>
+      <br>
+      <p class="content has-text-justified">
+        <!-- Add qualitative results description here -->
+      </p>
+    </div>
+  </section>
+
+  <br>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="content has-text-centered">
+      </div>
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p class="has-text-centered">
+              <!-- This website is licensed under a <a rel="license"
+                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+                Commons Attribution-ShareAlike 4.0 International License</a>. -->
+              The source code of this webpage is based on the <a
+                href="https://github.com/nerfies/nerfies.github.io">Nerfies</a> project webpage.
+            </p>
+            <p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
