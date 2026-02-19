@@ -15,6 +15,9 @@
   <link rel="stylesheet" href="./static/css/bulma.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="./static/css/index.css">
+  
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
 
@@ -40,6 +43,34 @@
 
     .publication-links {
       margin-top: 1.5rem;
+    }
+
+    .chart-container {
+      display: flex;
+      justify-content: space-between;
+      gap: 30px;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+
+    .chart-card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      flex: 1;
+      min-width: 280px;
+    }
+
+    .chart-card h3 {
+      margin-bottom: 15px;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .chart-card canvas {
+      height: 300px !important;
+      width: 100% !important;
     }
 
   </style>
@@ -100,6 +131,15 @@
                   <i class="ai ai-arxiv"></i>
                 </span>
                 <span>arXiv</span>
+              </a>
+            </span>
+
+            <span class="link-block">
+              <a href="https://github.com/vatsalag99/MemStream" target="_blank" rel="noopener noreferrer" class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                  <i class="fab fa-github"></i>
+                </span>
+                <span>Code</span>
               </a>
             </span>
 
@@ -202,6 +242,14 @@
         During encoding, we apply an <strong>adaptive selection strategy</strong> to identify and preserve critical video information in the sliding window. 
         When retrieving from the KV-cache, we propose a <strong>retrieval mixture-of-experts</strong> that leverages external models to boost retrieval quality.
       </p>
+      <br>
+      <p class="content has-text-justified">
+        <strong>Adaptive Key Selection (AKS)</strong> identifies and eliminates temporal redundancy in the sliding window. 
+        For each pair of adjacent key features, we compute patch-wise cosine similarity between corresponding spatial tokens and select the top-k least similar 
+        (i.e., most distinctive) patch features, where k is fixed. Our <strong>mixture-of-experts retrieval</strong> design fuses internal attention-based signals 
+        with external vision model retrieval using reciprocal rank fusion (RRF). 
+        This approach allows strong retrieval signals from one expert to compensate for weaker signals from another.
+      </p>
     </div>
   </section>
 
@@ -211,15 +259,88 @@
   <section class="section">
     <div class="container is-max-desktop">
       <h2 class="title is-3 has-text-centered">Quantitative Results</h2>
-      <div class="has-text-centered">
-        <!-- Add quantitative results image/table here -->
+      
+      <div class="chart-container">
+        <div class="chart-card">
+          <h3>CG-Bench</h3>
+          <canvas id="cgChart"></canvas>
+        </div>
+
+        <div class="chart-card">
+          <h3>LVBench</h3>
+          <canvas id="lvChart"></canvas>
+        </div>
+
+        <div class="chart-card">
+          <h3>VideoMME</h3>
+          <canvas id="videoChart"></canvas>
+        </div>
       </div>
       <br>
       <p class="content has-text-justified">
-        <!-- Add quantitative results description here -->
+        We show performance on CG-Bench, LVBench, and VideoMME. Replacing full sliding-window attention with our AKS strategy improves performance by 5.5% on CG-Bench and 4.1% on LVBench. 
+        Adding our retrieval mixture-of-experts provides an additional 2.4% gain on CG-Bench and 4.3% on LVBench. 
+        Our strategy surpasses external retrieval alone with a 2.3% improvement on both CG-Bench and LVBench.
       </p>
     </div>
   </section>
+
+  <script>
+    const labels = [
+      "ReKV",
+      "AKS (Internal)",
+      "Full (External)",
+      "AKS (MoE)"
+    ];
+
+    const colors = [
+      "#B0B0B0",     // ReKV - gray
+      "#A8D5E2",     // AKS (Internal) - pastel blue
+      "#B5E5CF",     // Full (External) - pastel green
+      "#FFB3BA"      // AKS (MoE) - pastel pink
+    ];
+
+    function createChart(canvasId, dataValues, minValue) {
+      new Chart(document.getElementById(canvasId), {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            data: dataValues,
+            backgroundColor: colors
+          }]
+        },
+        options: {
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return context.raw + "%";
+                }
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: false,
+              min: minValue,
+              title: {
+                display: true,
+                text: "Accuracy (%)"
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Qwen2.5-VL Results
+    createChart("cgChart", [36.17, 41.63, 41.77, 44.19], 34);
+    createChart("lvChart", [39.64, 43.77, 45.84, 48.10], 38);
+    createChart("videoChart", [51.78, 54.56, 50.89, 54.22], 49);
+  </script>
 
   <br>
 
@@ -232,7 +353,8 @@
       </div>
       <br>
       <p class="content has-text-justified">
-        <!-- Add qualitative results description here -->
+        We plot examples of representative retrievals for different videos on the CG-Bench dataset. 
+        Notably, we observe that ReKV generally retrieves from later parts of the video, while MemStream is able to identify relevant segments found earlier or in the middle of the video.
       </p>
     </div>
   </section>
