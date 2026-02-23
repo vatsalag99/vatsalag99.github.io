@@ -117,7 +117,7 @@
           <div class="publication-links">
 
             <span class="link-block">
-              <a href="#" class="external-link button is-normal is-rounded is-dark">
+              <a href="https://arxiv.org/pdf/2602.18434.pdf" target="_blank" rel="noopener noreferrer" class="external-link button is-normal is-rounded is-dark">
                 <span class="icon">
                   <i class="fas fa-file-pdf"></i>
                 </span>
@@ -126,7 +126,7 @@
             </span>
 
             <span class="link-block">
-              <a href="#" class="external-link button is-normal is-rounded is-dark">
+              <a href="https://arxiv.org/abs/2602.18434" target="_blank" rel="noopener noreferrer" class="external-link button is-normal is-rounded is-dark">
                 <span class="icon">
                   <i class="ai ai-arxiv"></i>
                 </span>
@@ -230,20 +230,20 @@
   <br>
 
   <!-- Method -->
-  <section class="section">
-    <div class="container is-max-desktop">
+<section class="section">
+  <div class="container is-max-desktop">
       <h2 class="title is-3 has-text-centered">Method</h2>
       <div class="has-text-centered">
         <img src="./static/images/method.pdf" alt="Method" style="width: 100%;" />
-      </div>
-      <br>
+        </div>
+        <br>
       <p class="content has-text-justified">
         We introduce MemStream, a training-free unified framework for effective encoding and retrieval of dense video streams. 
         During encoding, we apply an <strong>adaptive selection strategy</strong> to identify and preserve critical video information in the sliding window. 
         When retrieving from the KV-cache, we propose a <strong>retrieval mixture-of-experts</strong> that leverages external models to boost retrieval quality.
       </p>
-      <br>
-      <p class="content has-text-justified">
+        <br>
+        <p class="content has-text-justified">
         <strong>Adaptive Key Selection (AKS)</strong> identifies and eliminates temporal redundancy in the sliding window. 
         For each pair of adjacent key features, we compute patch-wise cosine similarity between corresponding spatial tokens and select the top-k least similar 
         (i.e., most distinctive) patch features, where k is fixed. Our <strong>mixture-of-experts retrieval</strong> design fuses internal attention-based signals 
@@ -251,7 +251,7 @@
         This approach allows strong retrieval signals from one expert to compensate for weaker signals from another.
       </p>
     </div>
-  </section>
+</section>
 
   <br>
 
@@ -312,6 +312,10 @@
         },
         options: {
           maintainAspectRatio: false,
+          interaction: {
+            intersect: false,
+            mode: 'index'
+          },
           plugins: {
             legend: { display: false },
             tooltip: {
