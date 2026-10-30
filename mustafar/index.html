@@ -226,9 +226,6 @@
             <a href="https://mgwillia.github.io/">Matthew Gwilliam</a><sup>1</sup>,
           </span>
           <span class="author-block">
-            <a href="https://www.linkedin.com/in/gefenkohavi">Gefen Kohavi</a><sup>2</sup>,
-          </span>
-          <span class="author-block">
             <a href="https://scholar.google.com/citations?user=2dDfKwUAAAAJ&hl=en">Eshan Verma</a><sup>2</sup>,
           </span>
           <span class="author-block">
@@ -348,7 +345,7 @@
           <br>
 
           <h2 class="subtitle has-text-centered">
-            We present <span class="dnerf"><b>Mustafar</b></span>, a multimodal understanding framework that leverages Stable Diffusion as a task-aware feature extractor.
+            We present <span class="dnerf"><b>DiffVLM</b></span>, which leverages pretrained text-to-image diffusion models to extract query-aware visual representations that complement CLIP features in MLLMs.
           </h2>
 
           <!-- Teaser -->
@@ -361,7 +358,7 @@
 
           <p class="content has-text-justified">
 
-            <!-- We present <b>Mustafar</b>, a multimodal understanding framework that leverages Stable Diffusion as a task-aware feature extractor. Motivated by the weaknesses of CLIP in capturing fine-grained and compositional visual information, we explore whether the internal representations of text-to-image diffusion models can be harnessed for visual question answering (VQA). We begin by analyzing diffusion features across a range of multimodal tasks and find that they offer both rich semantics and strong image-text alignment. Our investigations into text conditioning reveal that increasing the strength of text guidance leads to sharper focus on relevant image regions. However, we also discover that this alignment can result in caption leakage, where downstream language models are able to recover the  captions from the diffusion features. We provide a detailed analysis of this phenomenon and propose a mitigation strategy to reduce leakage. We further examine using questions directly as prompts and show, through both qualitative and quantitative analysis, that question conditioning helps highlight task-relevant image regions. Finally, we demonstrate that simple fusion strategies combining CLIP features with question-conditioned diffusion features can achieve strong performance across general-purpose and vision-centric benchmarks. Our results suggest that diffusion models are a promising direction for advancing visual understanding, particularly in tasks that demand fine-grained spatial reasoning and compositionality. -->
+            Multimodal large language models (MLLMs) have recently achieved strong visual understanding abilities by coupling large language models with pretrained vision encoders such as CLIP. However, these models still rely on static visual representations that are computed independently of the query, limiting their ability to capture query-specific visual cues. In contrast, text-to-image diffusion models naturally produce query-aware representations through text-conditioned denoising, making them a promising complementary source of visual features. Motivated by this observation, we propose <b>DiffVLM</b>, which leverages pretrained text-to-image diffusion models to extract query-aware visual representations that complement conventional CLIP features in MLLMs. We first analyze the behavior of diffusion features, finding that they are both rich in semantics and encode strong image-text alignment. By leveraging text-conditioning, we reveal that we can steer these features to focus on regions relevant to the input question. When aligning these features with a LLM, we uncover a leakage phenomenon: amplifying text-guidance allows the LLM to reconstruct information directly from the input diffusion prompt. To address this, we introduce a mitigation strategy that preserves query-aware information while preventing leakage. We harness the complementary strengths of CLIP’s image-text alignment and diffusion features’ query-adaptive representations via a simple fusion strategy. DiffVLM improves visual question answering performance on vision-centric and general-purpose benchmarks.
           </p>
         </div>
       </div>
@@ -656,7 +653,7 @@
       <h2 class="title">BibTeX</h2>
       <pre><code>
         @article{agarwal2024multimodal,
-          author    = {Agarwal, Vatsal and Gwilliam, Matthew and Kohavi, Gefen and Verma, Eshan and Ulbricht, Daniel and Shrivastava, Abhinav},
+          author    = {Agarwal, Vatsal and Gwilliam, Matthew and Verma, Eshan and Ulbricht, Daniel and Shrivastava, Abhinav},
           title     = {DiffVLM: Towards Text-Aware Multimodal Understanding via Stable Diffusion},
           journal   = {arXiv preprint},
           year      = {2024},
